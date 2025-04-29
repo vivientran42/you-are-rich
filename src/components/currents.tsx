@@ -70,7 +70,7 @@ const Currents: React.FC<CurrentsProps> = ({
               inputs.forEach((input) => (input.value = ""));
             }}
           >
-            RESET
+            CLEAR
           </button>
           <button
             className="w-20 rounded-full bg-red-500 hover:bg-red-600 hover:shadow-sm font-mono font-semibold text-white text-sm px-4 py-2 hover:scale-105 ease-in-out duration-200"
