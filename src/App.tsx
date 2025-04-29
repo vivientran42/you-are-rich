@@ -62,7 +62,7 @@ function App() {
         />
       )}
 
-      <div className="flex flex-col items-center w-full min-w-full px-10 pt-30">
+      <div className="flex flex-col items-center w-full min-w-full px-10 pt-15">
         <textarea
           id="entry"
           placeholder={prompt}
@@ -70,7 +70,7 @@ function App() {
           onChange={autoResize}
           className="w-full border-b-3 border-red-500 text-3xl sm:text-5xl text-slate-600"
         />
-        <button className="bg-red-500 hover:bg-red-600 hover:shadow-sm text-white py-3 px-20 mt-7 mb-20 rounded-xl text-3xl sm:text-5xl hover:scale-102 ease-in-out duration-500">
+        <button className="bg-red-500 hover:bg-red-600 hover:shadow-sm text-white py-3 px-20 mt-10 mb-30 rounded-xl text-3xl sm:text-5xl hover:scale-102 ease-in-out duration-500">
           I am rich in {richValue}
         </button>
       </div>
