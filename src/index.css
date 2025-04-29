@@ -21,18 +21,22 @@ body {
   min-height: 100%;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
 textarea {
   height: 1.5em;
   min-height: 1.5em;
-  max-height: 15em;
+  max-height: 10em;
   outline: none;
   resize: none;
-  overflow: hidden
+  overflow: auto;
+}
+
+input {
+  outline: none;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
 }
 
 @media (prefers-color-scheme: light) {
@@ -40,4 +44,10 @@ textarea {
     color: #213547;
     background-color: #ffffff;
   }
+}
+
+@theme {
+  --font-mono:
+    "Source Code Pro", Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
 }
