@@ -61,7 +61,7 @@ const Card: React.FC<CardProps> = ({
   return (
     <label className="block col-span-1">
       <input type="checkbox" className="peer hidden absolute scale-0" />
-      <span className="block p-5 rounded-xl peer-checked:rounded-b-none bg-white hover:bg-fuchsia-50 transition-all duration-200 delay-100 hover:scale-101 ease-in-out peer-checked:hover:scale-100">
+      <span className="block p-5 rounded-xl peer-checked:rounded-b-none bg-white hover:bg-fuchsia-50 transition-all duration-300 delay-150 hover:scale-101 ease-in-out peer-checked:hover:scale-100">
         <p className="text-red-500 text-lg md:text-xl lg:text-2xl text-center mb-3">
           {formattedDate}
         </p>
@@ -74,7 +74,7 @@ const Card: React.FC<CardProps> = ({
           </p>
         ))}
       </span>
-      <span className="block overflow-hidden rounded-b-xl bg-white max-h-0 peer-checked:max-h-screen transition-all duration-170 peer-checked:delay-300">
+      <span className="block overflow-hidden rounded-b-xl bg-white max-h-0 peer-checked:max-h-screen transition-all duration-300 peer-checked:delay-200">
         <p
           className="p-5 text-slate-700 text-sm w-full"
           style={{
