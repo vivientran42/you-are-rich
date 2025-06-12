@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import Card from "./components/card";
 import Currents from "./components/currents";
+import { getEntries, addEntry, Entries } from './db/entries';
+
 
 function App() {
   // setting prompt
@@ -26,11 +28,11 @@ function App() {
   // setting rich values
   const richValues = ["life", "love", "time"];
 
-  const [richValue, setRichProp] = useState("");
+  const [richValue, setRichValue] = useState("");
 
   useEffect(() => {
     const randomIndex = Math.floor(Math.random() * richValues.length);
-    setRichProp(richValues[randomIndex]);
+    setRichValue(richValues[randomIndex]);
   }, []);
 
   // auto-resize text area
@@ -41,6 +43,23 @@ function App() {
 
   // toggling currents menu
   const [showCurrents, setShowCurrents] = useState(false);
+
+  // entries db
+  const [entry, setEntry] = useState('');
+  const [entries, setEntries] = useState<Entries[]>([]);
+
+  const handleSubmit = async () => {
+    const newEntry: Entries = {
+      time: Date.now(),
+      prompt,
+      entry,
+    };
+
+    await addEntry(newEntry);
+    const updated = await getEntries();
+    setEntries(updated);
+    setEntry('');
+  };
 
   const components = Array(10).fill(null);
 
