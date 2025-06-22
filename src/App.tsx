@@ -8,14 +8,14 @@ import { getLatestCurrents, getAllCurrents, Currents } from "./db/currents";
 function App() {
   // PROMPTS
   const promptRichPairs = [
-    { prompt: "What are you grateful for?", rich: "love" },
-    { prompt: "How are you feeling?", rich: "love" },
+    { prompt: "What are you grateful for?", rich: "life" },
+    { prompt: "What is a fond memory you have?", rich: "life" },
     { prompt: "What are you excited for?", rich: "life" },
     { prompt: "What are you thinking about?", rich: "life" },
     { prompt: "What are you doing right now?", rich: "time" },
     { prompt: "What are you looking forward to?", rich: "time" },
-    { prompt: "What did you dream about?", rich: "rest" },
-    { prompt: "What is a fond memory of yours?", rich: "experiences" },
+    { prompt: "What did you dream about?", rich: "sleep" },
+    { prompt: "How are you feeling?", rich: "love" },
   ];
 
   const [prompt, setPrompt] = useState("");
@@ -82,6 +82,20 @@ function App() {
           onClick={() => setShowCurrents((prev) => !prev)}
         >
           CURRENTS
+        </button>
+
+        <button
+          className="text-sm sm:text-md font-mono font-semibold text-red-500 hover:scale-105 ease-in-out duration-200"
+          onClick={() => setShowCurrents((prev) => !prev)}
+        >
+          REMINISCE
+        </button>
+
+        <button
+          className="text-sm sm:text-md font-mono font-semibold text-red-500 hover:scale-105 ease-in-out duration-200"
+          onClick={() => setShowCurrents((prev) => !prev)}
+        >
+          ABOUT
         </button>
       </div>
 
