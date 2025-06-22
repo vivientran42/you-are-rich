@@ -1,13 +1,12 @@
-import React from "react";
-import { format } from "date-fns";
-
 interface CardProps {
-  mp3?: string;
-  artist?: string;
-  book?: string;
-  author?: string;
-  mp4?: string;
-  description: string;
+  date: string;
+  mp3?: string | undefined;
+  artist?: string | undefined;
+  book?: string | undefined;
+  author?: string | undefined;
+  mp4?: string | undefined;
+  prompt: string;
+  submittedEntry: string;
 }
 
 const formatItems = (
@@ -46,16 +45,16 @@ const formatItems = (
   return items;
 };
 
-const Card: React.FC<CardProps> = ({
+const CardUI: React.FC<CardProps> = ({
+  date,
   mp3,
   artist,
   book,
   author,
   mp4,
-  description,
+  prompt,
+  submittedEntry,
 }) => {
-  const now = new Date();
-  const formattedDate = format(now, "EEEE dd MMM yyyy h:mmaaa");
   const items = formatItems(mp3, artist, book, author, mp4);
 
   return (
@@ -63,7 +62,7 @@ const Card: React.FC<CardProps> = ({
       <input type="checkbox" className="peer hidden absolute scale-0" />
       <span className="block p-5 rounded-xl peer-checked:rounded-b-none bg-white hover:bg-fuchsia-50 transition-all duration-300 delay-150 hover:scale-101 ease-in-out peer-checked:hover:scale-100">
         <p className="text-red-500 text-lg md:text-xl lg:text-2xl text-center mb-3">
-          {formattedDate}
+          {date}
         </p>
         {items.map((item, index) => (
           <p
@@ -76,18 +75,29 @@ const Card: React.FC<CardProps> = ({
       </span>
       <span className="block overflow-hidden rounded-b-xl bg-white max-h-0 peer-checked:max-h-screen transition-all duration-300 peer-checked:delay-200">
         <p
-          className="p-5 text-slate-700 text-sm w-full"
+          className="px-5 pt-5 mb-2 text-slate-700 text-sm font-semibold w-full"
           style={{
             whiteSpace: "pre-wrap",
             wordWrap: "break-word",
             hyphens: "auto",
           }}
         >
-          {description}
+          {prompt}
+        </p>
+
+        <p
+          className="px-5 pb-5 text-slate-700 text-sm w-full"
+          style={{
+            whiteSpace: "pre-wrap",
+            wordWrap: "break-word",
+            hyphens: "auto",
+          }}
+        >
+          {submittedEntry}
         </p>
       </span>
     </label>
   );
 };
 
-export default Card;
+export default CardUI;
