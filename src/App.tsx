@@ -1,73 +1,84 @@
 import { useState, useEffect } from "react";
-import Card from "./components/card";
-import Currents from "./components/currents";
-import { getEntries, addEntry, Entries } from './db/entries';
-
+import CardUI from "./components/card";
+import CurrentsUI from "./components/currents";
+import EntryForm from "./components/entryForm";
+import { getEntries, Entries } from "./db/entries";
+import { getLatestCurrents, getAllCurrents, Currents } from "./db/currents";
 
 function App() {
-  // setting prompt
-  const prompts = [
-    "What are you grateful for?",
-    "What are you excited for?",
-    "What are you currently curious about?",
-    "How are you feeling?",
-    "What are you thinking about?",
-    "What are you doing right now?",
-    "What did you dream about?",
-    "What are you doing tomorrow?",
-    "What are you looking forward to?",
+  // PROMPTS
+  const promptRichPairs = [
+    { prompt: "What are you grateful for?", rich: "love" },
+    { prompt: "How are you feeling?", rich: "love" },
+    { prompt: "What are you excited for?", rich: "life" },
+    { prompt: "What are you thinking about?", rich: "life" },
+    { prompt: "What are you doing right now?", rich: "time" },
+    { prompt: "What are you looking forward to?", rich: "time" },
+    { prompt: "What did you dream about?", rich: "rest" },
+    { prompt: "What is a fond memory of yours?", rich: "experiences" },
   ];
 
   const [prompt, setPrompt] = useState("");
-
-  useEffect(() => {
-    const randomIndex = Math.floor(Math.random() * prompts.length);
-    setPrompt(prompts[randomIndex]);
-  }, []);
-
-  // setting rich values
-  const richValues = ["life", "love", "time"];
-
   const [richValue, setRichValue] = useState("");
 
+  const changePromptAndRichValue = (): void => {
+    const randomIndex = Math.floor(Math.random() * promptRichPairs.length);
+    setPrompt(promptRichPairs[randomIndex].prompt);
+    setRichValue(promptRichPairs[randomIndex].rich);
+  };
+
   useEffect(() => {
-    const randomIndex = Math.floor(Math.random() * richValues.length);
-    setRichValue(richValues[randomIndex]);
+    changePromptAndRichValue();
   }, []);
 
-  // auto-resize text area
-  const autoResize = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
-    e.target.style.height = "1.5em";
-    e.target.style.height = `${e.target.scrollHeight}px`;
-  };
-
-  // toggling currents menu
-  const [showCurrents, setShowCurrents] = useState(false);
-
-  // entries db
-  const [entry, setEntry] = useState('');
+  // ENTRIES
   const [entries, setEntries] = useState<Entries[]>([]);
 
-  const handleSubmit = async () => {
-    const newEntry: Entries = {
-      time: Date.now(),
-      prompt,
-      entry,
-    };
+  useEffect(() => {
+    async function fetchEntries() {
+      const data = await getEntries();
+      setEntries(data);
+    }
+    fetchEntries();
+  }, []);
 
-    await addEntry(newEntry);
-    const updated = await getEntries();
-    setEntries(updated);
-    setEntry('');
-  };
+  // CURRENTS
+  const [showCurrents, setShowCurrents] = useState(false);
+  const [currents, setCurrents] = useState<Currents[]>([]);
 
-  const components = Array(10).fill(null);
+  useEffect(() => {
+    async function fetchCurrents() {
+      const data = await getAllCurrents();
+      setCurrents(data);
+    }
+    fetchCurrents();
+  }, []);
+
+  const [latestCurrentsFields, setLatestCurrentsFields] = useState<
+    Partial<Currents>
+  >({});
+
+  useEffect(() => {
+    async function fetchLatestCurrents() {
+      const latest = await getLatestCurrents();
+      setLatestCurrentsFields(latest[0] || {});
+    }
+    fetchLatestCurrents();
+  }, []);
 
   return (
     <main>
-      <div className="flex flex-row justify-end w-full min-w-full gap-x-10 px-10 pt-5">
+      <div className="relative flex flex-row justify-end w-full min-w-full gap-x-10 px-10 pt-5">
+        <img
+          src="/logo.png"
+          className="h-6 md:h-8 lg:h-10 2xl:h-12 absolute left-1/2 transform -translate-x-1/2"
+          alt="You Are Rich logo"
+          fetchPriority="high"
+          loading="eager"
+        />
+
         <button
-          className="text-md font-mono font-semibold text-red-500 hover:scale-105 ease-in-out duration-200"
+          className="text-sm sm:text-md font-mono font-semibold text-red-500 hover:scale-105 ease-in-out duration-200"
           onClick={() => setShowCurrents((prev) => !prev)}
         >
           CURRENTS
@@ -75,39 +86,50 @@ function App() {
       </div>
 
       {showCurrents && (
-        <Currents
+        <CurrentsUI
+          mp3={latestCurrentsFields.mp3}
+          artist={latestCurrentsFields.artist}
+          book={latestCurrentsFields.book}
+          author={latestCurrentsFields.author}
+          mp4={latestCurrentsFields.mp4}
           showCurrents={showCurrents}
           setShowCurrents={setShowCurrents}
+          setLatestCurrentsFields={setLatestCurrentsFields}
         />
       )}
 
-      <div className="flex flex-col items-center w-full min-w-full px-10 pt-15">
-        <textarea
-          id="entry"
-          placeholder={prompt}
-          onInput={autoResize}
-          onChange={autoResize}
-          className="w-full border-b-3 border-red-500 text-3xl sm:text-5xl text-slate-600"
+      <div className="px-10 pt-36 pb-30 min-w-full min-h-[50vh]">
+        <EntryForm
+          prompt={prompt}
+          richValue={richValue}
+          setEntries={setEntries}
+          setCurrents={setCurrents}
+          changePromptAndRichValue={changePromptAndRichValue}
         />
-        <button className="bg-red-500 hover:bg-red-600 hover:shadow-sm text-white py-3 px-20 mt-10 mb-30 rounded-xl text-3xl sm:text-5xl hover:scale-102 ease-in-out duration-500">
-          I am rich in {richValue}
-        </button>
       </div>
 
       <div className="min-h-[50vh] bg-red-500">
         <div className="bg-red-500 grid place-items-stretch grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 w-full p-10">
-          <Card
-            artist="louis armstrong"
-            mp4="watching the detectives"
-            description="laptop go brr"
-          />
-          {components.map((_, index) => (
-            <Card
-              mp3="i wish i was stephen malkmus"
-              artist="beabadobee"
-              description="i had a good day"
-            />
-          ))}
+          {entries
+            .slice()
+            .reverse()
+            .map((entry, index) => {
+              const current =
+                currents.find((c) => c.id === entry.currentId) || {};
+              return (
+                <CardUI
+                  key={index}
+                  date={entry.date}
+                  prompt={entry.prompt}
+                  submittedEntry={entry.entry}
+                  mp3={current.mp3 ?? undefined}
+                  artist={current.artist ?? undefined}
+                  book={current.book ?? undefined}
+                  author={current.author ?? undefined}
+                  mp4={current.mp4 ?? undefined}
+                />
+              );
+            })}
         </div>
       </div>
     </main>
