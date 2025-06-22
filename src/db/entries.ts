@@ -2,9 +2,10 @@ import { initDb } from "./db";
 
 export interface Entries {
   id?: number;
-  time: number;
+  date: string;
   prompt: string;
   entry: string;
+  currentId: number;
 }
 
 const STORE_ENTRIES = "entries";
