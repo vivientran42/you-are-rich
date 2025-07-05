@@ -7,7 +7,6 @@ import { addEntry, getEntries } from "../db/entries";
 interface EntryFormProps {
   prompt: string;
   richValue: string;
-
   setEntries: React.Dispatch<React.SetStateAction<Entries[]>>;
   setCurrents: React.Dispatch<React.SetStateAction<Currents[]>>;
   changePromptAndRichValue: () => void;
@@ -18,10 +17,9 @@ const autoResize = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
   e.target.style.height = `${e.target.scrollHeight}px`;
 };
 
-const EntryForm: React.FC<EntryFormProps> = ({
+const EntryFormUI: React.FC<EntryFormProps> = ({
   prompt,
   richValue,
-
   setEntries,
   setCurrents,
   changePromptAndRichValue,
@@ -65,11 +63,11 @@ const EntryForm: React.FC<EntryFormProps> = ({
           autoResize(e);
           setEntry(e.target.value);
         }}
-        className="w-full border-b-3 border-red-500 text-3xl sm:text-5xl text-slate-600"
+        className="w-full border-b-3 border-red-500 text-3xl sm:text-4xl md:text-5xl text-slate-600"
       />
       <button
         disabled={entry.trim() === ""}
-        className={`py-3 px-20 mt-15 rounded-xl text-3xl sm:text-5xl ease-in-out duration-500
+        className={`py-3 px-20 mt-15 rounded-xl text-3xl sm:text-4xl md:text-5xl ease-in-out duration-500
           ${
             entry.trim() === ""
               ? "bg-red-500 text-fuchsia-200 cursor-not-allowed"
@@ -84,4 +82,4 @@ const EntryForm: React.FC<EntryFormProps> = ({
   );
 };
 
-export default EntryForm;
+export default EntryFormUI;

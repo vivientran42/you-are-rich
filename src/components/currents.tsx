@@ -26,7 +26,7 @@ const CurrentsUI: React.FC<CurrentsProps> = ({
 }) => {
   return (
     showCurrents && (
-      <div className="absolute top-13 end-10 rounded-lg border-2 border-red-500 bg-white/90 px-8 py-4 w-70">
+      <div className="absolute top-13 end-7 rounded-lg border-2 border-red-500 bg-white/95 px-8 py-4 w-70">
         <label className="block font-mono font-semibold text-red-500 text-sm mb-5">
           🎧 SONG/ALBUM<br></br>
           <input
