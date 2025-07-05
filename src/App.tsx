@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import CardUI from "./components/card";
 import CurrentsUI from "./components/currents";
-import EntryForm from "./components/entryForm";
+import EntryFormUI from "./components/entryForm";
+import ModalUI from "./components/modal";
 import { getEntries, Entries } from "./db/entries";
 import { getLatestCurrents, getAllCurrents, Currents } from "./db/currents";
+import FormatItems from "./utils/formatItems";
 
 function App() {
   // PROMPTS
@@ -14,7 +16,7 @@ function App() {
     { prompt: "What are you thinking about?", rich: "life" },
     { prompt: "What are you doing right now?", rich: "time" },
     { prompt: "What are you looking forward to?", rich: "time" },
-    { prompt: "What did you dream about?", rich: "sleep" },
+    { prompt: "What did you dream about?", rich: "rest" },
     { prompt: "How are you feeling?", rich: "love" },
   ];
 
@@ -66,12 +68,62 @@ function App() {
     fetchLatestCurrents();
   }, []);
 
+  // ABOUT
+  const [showAbout, setShowAbout] = useState(false);
+
+  const handleOpenAbout = () => setShowAbout(true);
+  const handleCloseAbout = () => setShowAbout(false);
+
+  // REMINISCE
+  interface ReminisceProps {
+    date: string;
+    prompt: string;
+    submittedEntry: string;
+    items: { text: string }[];
+  }
+
+  const [showReminisce, setshowReminisce] = useState(false);
+  const [randomEntry, setRandomEntry] = useState<ReminisceProps | null>(null);
+
+  const handleOpenReminisce = () => {
+    getRandomEntry();
+    setshowReminisce(true);
+  };
+  const handleCloseReminisce = () => setshowReminisce(false);
+
+  const getRandomEntry = (): void => {
+    const randomIndex = Math.floor(Math.random() * entries.length);
+    const randomEntry = entries[randomIndex];
+    const current = currents.find((c) => c.id === randomEntry.currentId) || {};
+    const items = FormatItems(
+      current.mp3,
+      current.artist,
+      current.book,
+      current.author,
+      current.mp4,
+    );
+    setRandomEntry({
+      date: randomEntry.date,
+      prompt: randomEntry.prompt,
+      submittedEntry: randomEntry.entry,
+      items: items,
+    });
+  };
+
   return (
     <main>
-      <div className="relative flex flex-row justify-end w-full min-w-full gap-x-10 px-10 pt-5">
+      <div className="bg-fuchsia-50 relative flex flex-row justify-end w-full min-w-full gap-x-10 px-10 pt-5">
         <img
           src="/logo.png"
-          className="h-6 md:h-8 lg:h-10 2xl:h-12 absolute left-1/2 transform -translate-x-1/2"
+          className="h-0 md:h-7 lg:h-7 2xl:h-12 absolute left-10 hover:scale-102 ease-in-out duration-400"
+          alt="You Are Rich logo"
+          fetchPriority="high"
+          loading="eager"
+        />
+
+        <img
+          src="/moneybag.png"
+          className="h-7 md:h-0 absolute left-10 hover:scale-102 ease-in-out duration-400"
           alt="You Are Rich logo"
           fetchPriority="high"
           loading="eager"
@@ -86,14 +138,14 @@ function App() {
 
         <button
           className="text-sm sm:text-md font-mono font-semibold text-red-500 hover:scale-105 ease-in-out duration-200"
-          onClick={() => setShowCurrents((prev) => !prev)}
+          onClick={handleOpenReminisce}
         >
           REMINISCE
         </button>
 
         <button
           className="text-sm sm:text-md font-mono font-semibold text-red-500 hover:scale-105 ease-in-out duration-200"
-          onClick={() => setShowCurrents((prev) => !prev)}
+          onClick={handleOpenAbout}
         >
           ABOUT
         </button>
@@ -112,8 +164,116 @@ function App() {
         />
       )}
 
-      <div className="px-10 pt-36 pb-30 min-w-full min-h-[50vh]">
-        <EntryForm
+      <ModalUI
+        isOpen={showReminisce}
+        onClose={handleCloseReminisce}
+        size="px-16 lg:px-10 py-10 lg:py-10 min-w-1/2 max-w-4/5 lg:max-w-3/5 max-h-9/10"
+        children={
+          <div>
+            {!randomEntry ? (
+              <p className="text-slate-700 text-xl">Write an entry first!</p>
+            ) : (
+              <div className="flex">
+                <div className="w-1/3">
+                  <p
+                    className="text-red-500 font-semibold text-sm md:text-md lg:text-lg text-left mb-3"
+                    style={{
+                      whiteSpace: "pre-wrap",
+                      wordWrap: "break-word",
+                      hyphens: "auto",
+                    }}
+                  >
+                    {randomEntry.date}
+                  </p>
+                  {randomEntry.items.map((item, index) => (
+                    <p
+                      key={index}
+                      className="font-mono text-pink-500 md:font-semibold text-xs md:text-sm text-left mb-1"
+                      style={{
+                        whiteSpace: "pre-wrap",
+                        wordWrap: "break-word",
+                        hyphens: "auto",
+                      }}
+                    >
+                      {item.text}
+                    </p>
+                  ))}
+                </div>
+                <div className="w-2/3 ml-6">
+                  <p
+                    className="mb-2 text-slate-700 text-base md:text-lg lg:text-xl font-semibold"
+                    style={{
+                      whiteSpace: "pre-wrap",
+                      wordWrap: "break-word",
+                      hyphens: "auto",
+                    }}
+                  >
+                    {randomEntry.prompt}
+                  </p>
+
+                  <p
+                    className="text-slate-700 text-base md:text-lg lg:text-xl"
+                    style={{
+                      whiteSpace: "pre-wrap",
+                      wordWrap: "break-word",
+                      hyphens: "auto",
+                    }}
+                  >
+                    {randomEntry.submittedEntry}
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+        }
+      />
+
+      <ModalUI
+        isOpen={showAbout}
+        onClose={handleCloseAbout}
+        size="px-16 lg:px-30 py-10 lg:py-18 w-3/5 max-h-9/10"
+        children={
+          <div>
+            <p className="text-slate-700 text-base md:text-lg lg:text-xl">
+              Hello! Thank you for installing{" "}
+              <span className="font-semibold">You Are Rich</span>.
+              <br />
+              <br />
+              This extension was born out of a part silly / part serious idea
+              that we are all so very rich and need to document it and remember
+              it more often :-)
+              <br />
+              <br />
+              All your thoughts are stored locally, meaning they are tied and
+              private to your device.
+              <br />
+              <br />
+              <span className="font-semibold">Currents</span> is a way to record
+              any media you are consuming, things that may be shaping your
+              thoughts and feelings. Any of these fields can be left blank.
+              <br />
+              <br />
+              <span className="font-semibold">Reminisce</span> lets you go back
+              in time to a random day to see what you were thinking about.
+              <br />
+              <br />
+              Hope you enjoy! Have fun! Let us be rich!
+              <br />
+              <br />
+              Created by{" "}
+              <span className="font-semibold text-pink-500 hover:font-bold ease-in-out duration-200">
+                <a href="https://vivientran42.github.io" target="_blank">
+                  Vivien Tran
+                </a>
+              </span>
+              .
+            </p>
+          </div>
+        }
+      />
+
+      <div className="bg-fuchsia-50 px-10 pt-32 pb-30 min-w-full min-h-[50vh]">
+        <EntryFormUI
           prompt={prompt}
           richValue={richValue}
           setEntries={setEntries}
