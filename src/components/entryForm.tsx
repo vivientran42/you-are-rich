@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { format } from "date-fns";
-import { Entries } from "../db/entries";
-import { Currents, getAllCurrents, getLatestCurrents } from "../db/currents";
-import { addEntry, getEntries } from "../db/entries";
+import { Entries } from "@/db/entries";
+import { Currents, getAllCurrents, getLatestCurrents } from "@/db/currents";
+import { addEntry, getEntries } from "@/db/entries";
 
 interface EntryFormProps {
   prompt: string;

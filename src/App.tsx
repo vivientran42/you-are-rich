@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import CardUI from "./components/card";
-import CurrentsUI from "./components/currents";
-import EntryFormUI from "./components/entryForm";
-import ModalUI from "./components/modal";
-import { getEntries, Entries } from "./db/entries";
-import { getLatestCurrents, getAllCurrents, Currents } from "./db/currents";
-import FormatItems from "./utils/formatItems";
+import CardUI from "@/components/card";
+import CurrentsUI from "@/components/currents";
+import EntryFormUI from "@/components/entryForm";
+import ModalUI from "@/components/modal";
+import { getEntries, Entries } from "@/db/entries";
+import { getLatestCurrents, getAllCurrents, Currents } from "@/db/currents";
+import FormatItems from "@/utils/formatItems";
 
 function App() {
   // PROMPTS

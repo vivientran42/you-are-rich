@@ -1,4 +1,4 @@
-import FormatItems from "../utils/formatItems";
+import FormatItems from "@/utils/formatItems";
 
 interface CardProps {
   date: string;

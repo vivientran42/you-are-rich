@@ -1,5 +1,5 @@
-import { getLatestCurrents } from "../db/currents";
-import { Currents } from "../db/currents";
+import { getLatestCurrents } from "@/db/currents";
+import { Currents } from "@/db/currents";
 
 interface CurrentsProps {
   mp3?: string;
@@ -112,7 +112,7 @@ const CurrentsUI: React.FC<CurrentsProps> = ({
                 mp4: getOrUndefined("mp4"),
               };
 
-              await import("../db/currents").then(({ addCurrents }) =>
+              await import("@/db/currents").then(({ addCurrents }) =>
                 addCurrents(currents),
               );
 

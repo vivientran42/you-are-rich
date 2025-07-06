@@ -1,4 +1,4 @@
-import { initDb } from "./db";
+import { initDb } from "@/db/db";
 
 export interface Currents {
   id?: number;
