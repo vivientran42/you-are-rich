@@ -92,6 +92,10 @@ function App() {
   const handleCloseReminisce = () => setshowReminisce(false);
 
   const getRandomEntry = (): void => {
+    if (entries.length === 0) {
+      setRandomEntry(null);
+      return;
+    }
     const randomIndex = Math.floor(Math.random() * entries.length);
     const randomEntry = entries[randomIndex];
     const current = currents.find((c) => c.id === randomEntry.currentId) || {};
@@ -167,11 +171,15 @@ function App() {
       <ModalUI
         isOpen={showReminisce}
         onClose={handleCloseReminisce}
-        size="px-16 lg:px-10 py-10 lg:py-10 min-w-1/2 max-w-4/5 lg:max-w-3/5 max-h-9/10"
+        size={!randomEntry ? ("px-20 lg:px-16 py-10 lg:py-10 max-w-4/5") : ("px-16 lg:px-10 py-10 lg:py-10 min-w-1/2 max-w-4/5 lg:max-w-3/5 max-h-9/10")}
         children={
           <div>
             {!randomEntry ? (
-              <p className="text-slate-700 text-xl">Write an entry first!</p>
+              <div className="flex justify-center">
+                <p className="text-slate-700 text-xl">
+                  Nothing to reminisce on :-(<br></br>Write something first!
+                </p>
+              </div>
             ) : (
               <div className="flex">
                 <div className="w-1/3">
