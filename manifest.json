@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "You Are Rich",
   "version": "1.0.0",
-  "description": "Replaces new tab with 'You Are Rich' journalling extension.",
+  "description": "Think about the richness of your life! A digital journal Chrome extension.",
   "chrome_url_overrides": {
     "newtab": "index.html"
   },
