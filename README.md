@@ -1,4 +1,5 @@
-You Are Rich Google Chrome extension built with [Vite](https://vite.dev/) - a digital journal encouraging users to reflect on the richness of life.
+## You Are Rich
+A Google Chrome extension built with [Vite](https://vite.dev/) - a digital journal encouraging users to reflect on the richness of life.
 
 ## Run locally
 
