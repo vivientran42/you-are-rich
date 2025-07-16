@@ -2,7 +2,7 @@
 ## About
 **You Are Rich** is a digital journal Google Chrome extension encouraging users to reflect on the richness of life.
 
-View on the [Chrome Web Store](https://chromewebstore.google.com/category/extensions?hl=en-GB&utm_source=ext_sidebar). 
+View on the [Chrome Web Store](https://chromewebstore.google.com/detail/lkpnhgajalpddhedbefafgdmflgoopkj?utm_source=item-share-cb). 
 
 Built with [Vite](https://vite.dev/).
 
